@@ -1,4 +1,0 @@
-# Щоденне оновлення даних (crontab -e на сервері). Шлях замініть на свій.
-15 6 * * * cd /opt/product-hunter && docker compose run --rm web python -m app.cli sync-meta --days 90 >> storage/sync.log 2>&1
-# Увімкніть після перевірки API LP-CRM командою lpcrm-probe:
-# 30 6 * * * cd /opt/product-hunter && docker compose run --rm web python -m app.cli sync-crm --days 90 >> storage/sync.log 2>&1

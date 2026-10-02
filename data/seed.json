@@ -1,0 +1,46 @@
+{
+  "_note": "Агрегати Meta за 90 днів до 01.10.2026 (кабінети 1 бм 2 рк (MAX), ХітМаркет, рк2; топ-20 кампаній за спендом). Замінюються реальними даними після `python -m app.cli sync-meta`.",
+  "period_end": "2026-10-01",
+  "products": [
+    {"code": "id72", "name": "Подрібнювач", "category": "Кухня", "spend": 11991.55, "leads": 5462},
+    {"code": "id260", "name": "Блендер", "category": "Кухня", "spend": 966.60, "leads": 404},
+    {"code": "id51", "name": "Компресор", "category": "Авто/інструмент", "spend": 810.44, "leads": 298},
+    {"code": "id263", "name": "Сушарка кругла", "category": "Кухня", "spend": 633.70, "leads": 211},
+    {"code": "id255", "name": "Сушарка", "category": "Кухня", "spend": 338.66, "leads": 116},
+    {"code": "id117", "name": "Кавоварка", "category": "Кухня", "spend": 744.39, "leads": 221},
+    {"code": "id20", "name": "Аерогриль", "category": "Кухня", "spend": 2009.37, "leads": 532},
+    {"code": "id75", "name": "Віброплатформа", "category": "Здоров'я", "spend": 2281.90, "leads": 675},
+    {"code": "id42", "name": "Рюкзак", "category": "Інше", "spend": 263.97, "leads": 75},
+    {"code": "id144", "name": "Аплікатор Кузнєцова", "category": "Здоров'я", "spend": 155.09, "leads": 48},
+    {"code": "id258", "name": "Зеплайн-піраміда", "category": "Кухня", "spend": 451.12, "leads": 76}
+  ],
+  "audience_account": "4127824067508712",
+  "audience": [
+    ["18-24", "female", 202.54, 55], ["18-24", "male", 42.78, 16],
+    ["25-34", "female", 910.74, 245], ["25-34", "male", 193.70, 48],
+    ["35-44", "female", 1670.36, 429], ["35-44", "male", 449.72, 130],
+    ["45-54", "female", 1971.73, 525], ["45-54", "male", 711.01, 233],
+    ["55-64", "female", 2007.62, 607], ["55-64", "male", 799.31, 246],
+    ["65+", "female", 1160.81, 386], ["65+", "male", 507.88, 166]
+  ],
+  "candidates": [
+    {"name": "Електрична щітка-скрабер", "query_en": "electric spin scrubber", "category": "Прибирання",
+     "trend": 4, "ad_proof": 4, "ua_saturation": 3, "unit_economics": 3, "audience_fit": 5, "similarity": 3,
+     "risk_penalty": 0, "expected_cpl_usd": 2.8,
+     "comment": "US: 92 активні оголошення; UA: ~95 (частина нерелевантні); біль «прибирання без нахилів»"},
+    {"name": "Бездротовий вакууматор", "query_en": "portable vacuum sealer", "category": "Кухня",
+     "trend": 4, "ad_proof": 4, "ua_saturation": 3, "unit_economics": 3, "audience_fit": 4, "similarity": 3,
+     "risk_penalty": 0, "expected_cpl_usd": 3.0,
+     "comment": "US: 105 оголошень, тренд TikTok Shop; UA: ~115; ваш вакууматор мав CPL $4.4 (мала вибірка)"},
+    {"name": "Міні-подрібнювач часнику", "query_en": "electric garlic chopper", "category": "Кухня",
+     "trend": 3, "ad_proof": 5, "ua_saturation": 2, "unit_economics": 2, "audience_fit": 4, "similarity": 5,
+     "risk_penalty": 5, "expected_cpl_usd": 2.0,
+     "comment": "US: 556 оголошень, багато клонів; UA «подрібнювач»: ~169; низький чек — краще як допродаж"},
+    {"name": "Віброплатформа (нова хвиля)", "query_en": "vibration plate", "category": "Здоров'я",
+     "trend": 2, "ad_proof": 3, "ua_saturation": 2, "unit_economics": 3, "audience_fit": 3, "similarity": 4,
+     "risk_penalty": 5, "expected_cpl_usd": 3.6, "comment": "Мейнстрім у DE (Tchibo); ваш CPL нестабільний"},
+    {"name": "Red light therapy", "query_en": "red light therapy", "category": "Здоров'я",
+     "trend": 3, "ad_proof": 4, "ua_saturation": 3, "unit_economics": 3, "audience_fit": 3, "similarity": 1,
+     "risk_penalty": 15, "expected_cpl_usd": 4.5, "comment": "Ризик політик Meta щодо здоров'я"}
+  ]
+}

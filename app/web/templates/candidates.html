@@ -1,0 +1,17 @@
+{% extends "base.html" %}{% block content %}
+<h1>Кандидати</h1>
+<p class="hint">Допустимий CPL зараз: ціль {{ target|usd }}, беззбиток {{ be|usd }}. Score рахується з оцінок 0–5 і ваг з «Налаштування».</p>
+<div class="scroll"><table><tr><th>Товар</th>{% for b in BLOCKS %}<th class="n">{{ BLOCK_LABELS[b] }}</th>{% endfor %}
+<th class="n">Штраф</th><th class="n">Очік. CPL</th><th class="n">Score</th><th>Рішення</th></tr>
+{% for v in rows %}{% set d = DECISION[v.decision] %}<tr><td><a href="/candidates/{{ v.c.id }}">{{ v.c.name }}</a>
+{% if v.filled < BLOCKS|length %}<span class="muted"> ({{ v.filled }}/{{ BLOCKS|length }})</span>{% endif %}</td>
+{% for b in BLOCKS %}<td class="n">{{ v.c[b] if v.c[b] is not none else '—' }}</td>{% endfor %}
+<td class="n">{{ v.c.risk_penalty }}</td><td class="n">{{ v.c.expected_cpl_usd|usd }}</td><td class="n"><b>{{ v.score }}</b></td>
+<td><span class="pill {{ d[1] }}">{{ d[0] }}</span></td></tr>{% endfor %}</table></div>
+<h2>Додати кандидата</h2>
+<form class="card grid" method="post" action="/candidates">
+<label>Назва<input name="name" required placeholder="Напр. Електрична щітка-скрабер"></label>
+<label>Пошукова фраза EN/DE<input name="query_en" placeholder="electric spin scrubber"></label>
+<label>Категорія<input name="category"></label><label>Очікуваний CPL, $<input name="expected_cpl_usd" inputmode="decimal"></label>
+<div><button>Додати</button></div></form>
+{% endblock %}

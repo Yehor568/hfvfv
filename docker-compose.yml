@@ -1,0 +1,11 @@
+services:
+  web:
+    build: .
+    env_file: .env
+    environment:
+      DATABASE_URL: sqlite:////data/product_hunter.db
+    volumes:
+      - ./storage:/data
+    ports:
+      - "8000:8000"
+    restart: unless-stopped

@@ -1,0 +1,37 @@
+{% extends "base.html" %}{% block content %}
+<h1>Налаштування</h1>
+{% if msg %}<div class="msg {{ 'bad' if msg.startswith('Помилка') else 'ok' }}">{{ msg }}</div>{% endif %}
+{% set labels = {'product_margin_uah':'Маржа з товару, ₴','upsell_margin_uah':'Маржа допродажів, ₴','upsell_commission':'Комісія з допродажів (0–1)',
+'approve_rate':'Апрув (0–1)','buyout_rate':'Викуп (0–1)','return_cost_uah':'Повернення невикупу, ₴','order_cost_uah':'Витрати на підтверджене замовлення, ₴',
+'uah_per_usd':'Курс ₴/$','profit_reserve':'Запас прибутку (0–1)'} %}
+<h2>Економіка</h2><p class="hint">Зараз: беззбитковий CPL {{ be|usd }}, цільовий {{ target|usd }}.</p>
+<form class="card grid" method="post" action="/settings/economics">{% for f in econ_fields %}
+<label>{{ labels.get(f, f) }}<input name="{{ f }}" value="{{ params[f] }}" inputmode="decimal"></label>{% endfor %}
+<div><button>Зберегти</button></div></form>
+
+<h2>Ваги Score (сума 100) і пороги</h2>
+<form class="card grid" method="post" action="/settings/scoring">{% for b in BLOCKS %}
+<label>{{ BLOCK_LABELS[b] }}<input name="{{ b }}" value="{{ cfg.weights[b] }}"></label>{% endfor %}
+<label>«В тест» від<input name="test_threshold" value="{{ cfg.test_threshold }}"></label>
+<label>«Спостерігати» від<input name="watch_threshold" value="{{ cfg.watch_threshold }}"></label>
+<div><button>Зберегти</button></div></form>
+
+<h2>Протокол тесту</h2>
+{% set tl = {'daily_budget_usd':'Бюджет тесту, $/день','days':'Днів тесту','scale_budget_usd':'Бюджет масштабу, $/день',
+'min_approve_for_scale':'Мін. апрув для масштабу (0–1)','kill_spend_multiplier':'Kill-спенд, × цільовий CPL',
+'min_orders_for_product_rates':'Мін. замовлень для власних апруву/викупу товару'} %}
+<form class="card grid" method="post" action="/settings/test">{% for k, val in proto.items() %}
+<label>{{ tl.get(k, k) }}<input name="{{ k }}" value="{{ val }}"></label>{% endfor %}<div><button>Зберегти</button></div></form>
+
+<h2>LP-CRM: імпорт замовлень (CSV)</h2>
+<form class="card" method="post" action="/settings/crm-import" enctype="multipart/form-data" style="display:flex;gap:10px;flex-wrap:wrap;align-items:center">
+<input type="file" name="file" accept=".csv,text/csv" required><button>Імпортувати</button>
+<span class="hint">Потрібні колонки: ID замовлення, Статус; бажано Дата, ID товару або Товар. Роздільник «,» або «;».</span></form>
+
+<h2>Статуси LP-CRM → категорії</h2>
+<form class="card" method="post" action="/settings/status-map">
+<p class="hint">Формат: <code>назва статусу = категорія</code>. Категорії: new, approved, shipped, bought, returned, cancelled.
+Пошук без урахування регістру, також за входженням слова.</p>
+<textarea name="mapping" style="min-height:220px">{% for k, v in status_map.items() %}{{ k }} = {{ v }}
+{% endfor %}</textarea><button>Зберегти</button></form>
+{% endblock %}

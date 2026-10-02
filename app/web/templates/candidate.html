@@ -1,0 +1,37 @@
+{% extends "base.html" %}{% block content %}{% set c = v.c %}{% set d = DECISION[v.decision] %}
+<h1>{{ c.name }}</h1>
+<div class="tiles"><div class="tile"><div class="l">Score</div><div class="v">{{ v.score }}</div></div>
+<div class="tile"><div class="l">Рішення</div><div class="v"><span class="pill {{ d[1] }}">{{ d[0] }}</span></div></div>
+<div class="tile"><div class="l">CPL-фільтр</div><div class="v">{{ {'ok':'OK','thin':'Тонко','expensive':'Дорого'}.get(v.flag, '—') }}</div></div>
+<div class="tile"><div class="l">Маржа з товару</div><div class="v">{{ v.margin|uah }}</div></div></div>
+<form class="card grid" method="post">
+<label>Назва<input name="name" value="{{ c.name }}"></label>
+<label>Пошукова фраза EN/DE<input name="query_en" value="{{ c.query_en }}"></label>
+<label>Категорія<input name="category" value="{{ c.category }}"></label>
+{% for b in BLOCKS %}<label>{{ BLOCK_LABELS[b] }} (0–5, вага {{ cfg.weights[b]|round|int }})
+<input type="number" min="0" max="5" name="{{ b }}" value="{{ c[b] if c[b] is not none else '' }}"></label>{% endfor %}
+<label>Штраф ризиків (0–20)<input type="number" min="0" max="20" name="risk_penalty" value="{{ c.risk_penalty }}"></label>
+<label>Очікуваний CPL, $<input name="expected_cpl_usd" value="{{ c.expected_cpl_usd if c.expected_cpl_usd is not none else '' }}"></label>
+<label>Закупка, ₴ (1688 + доставка)<input name="purchase_price_uah" value="{{ c.purchase_price_uah if c.purchase_price_uah is not none else '' }}"></label>
+<label>Ціна продажу, ₴<input name="sale_price_uah" value="{{ c.sale_price_uah if c.sale_price_uah is not none else '' }}"></label>
+<label style="grid-column:1/-1">Коментар<textarea name="comment">{{ c.comment }}</textarea></label>
+<div style="display:flex;gap:8px"><button>Зберегти</button>
+<button class="secondary" name="_action" value="delete" onclick="return confirm('Видалити кандидата?')">Видалити</button></div></form>
+<p class="hint">Шкала оцінок — у «Налаштування» та в model/Product_Hunter_Model.xlsx (аркуш «Ваги»).</p>
+
+<h2>Meta Ad Library</h2>
+<form class="card" method="post" action="/candidates/{{ c.id }}/ad-library" style="display:flex;gap:10px;flex-wrap:wrap;align-items:end">
+<label>Країна<select name="country">{% for cc in countries %}<option>{{ cc }}</option>{% endfor %}</select></label>
+<label>Запит<input name="query" value="{{ c.query_en or c.name }}"></label><button>Перевірити</button>
+<span class="hint">Офіційний API показує комерційну рекламу лише для ЄС. США — вручну на facebook.com/ads/library.</span></form>
+<div class="scroll"><table><tr><th>Дата</th><th>Країна</th><th>Запит</th><th class="n">Активні</th><th class="n">&gt; 30 днів</th>
+<th class="n">Рекламодавці</th><th>Приклади / помилка</th></tr>
+{% for k in c.library_checks %}<tr><td>{{ k.checked_at.strftime('%d.%m %H:%M') }}</td><td>{{ k.country }}</td><td>{{ k.query }}</td>
+<td class="n">{{ k.active_ads }}</td><td class="n">{{ k.long_running_ads }}</td><td class="n">{{ k.advertisers }}</td>
+<td class="wrap {{ 'bad' if k.error }}">{{ k.error or (k.sample_titles or [])[:3]|join(' · ') }}</td></tr>
+{% else %}<tr><td colspan="7" class="muted">Ще не перевіряли.</td></tr>{% endfor %}</table></div>
+
+<h2>Аналіз психології (варіант Б)</h2>
+<p class="hint">Скопіюйте запит у сесію Claude, додайте коментарі й відгуки, а оцінку з пункту 7 внесіть у «ЦА 45+».</p>
+<pre id="prompt">{{ prompt }}</pre><button class="secondary" onclick="navigator.clipboard.writeText(document.getElementById('prompt').innerText)">Скопіювати</button>
+{% endblock %}
